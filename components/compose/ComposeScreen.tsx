@@ -1,7 +1,12 @@
 'use client'
 import { useState } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations, useLocale } from 'next-intl'
 import { DEMO_TEXT, MessageEditor } from './MessageEditor'
+
+const DEMO_TEXTS: Record<string, string> = {
+  'zh-TW': '銀行密碼提醒：保險箱密碼 7842-3905\n本月帳單帳戶餘額：USD 12,408.55\n\n如果你在 24 小時內沒收到我的電話，\n請聯絡王律師 +886-2-2718-0042，\n並告知他「藍色信封」這個關鍵字。',
+  'en': 'Bank reminder: Safe combination 7842-3905\nCurrent account balance: USD 12,408.55\n\nIf you haven\'t heard from me within 24 hours,\nplease contact Attorney Wang at +886-2-2718-0042\nand mention the keyword "Blue Envelope".',
+}
 import { OptionChips } from './OptionChips'
 import { ComposeSidebar } from './ComposeSidebar'
 import { encryptMessage } from '@/lib/crypto'
@@ -13,8 +18,8 @@ interface ComposeScreenProps {
 
 export function ComposeScreen({ show, onEncrypt }: ComposeScreenProps) {
   const t = useTranslations('compose')
-  const tEditor = useTranslations('editor')
-  const [message, setMessage] = useState(() => tEditor('demo_text'))
+  const locale = useLocale()
+  const [message, setMessage] = useState(() => DEMO_TEXTS[locale] ?? DEMO_TEXTS['en'])
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
