@@ -20,7 +20,7 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: 'BlockSeal · 數位封印',
+  title: 'BlockSeal · 鏈諭',
   description: '端到端加密訊息，僅將密文雜湊寫入鏈上作為存證。',
 }
 

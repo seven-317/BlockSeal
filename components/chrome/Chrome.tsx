@@ -33,7 +33,7 @@ export function Chrome({ screen, onScreenChange }: ChromeProps) {
           </svg>
         </div>
         <div className="brand-text">
-          <div className="name">BlockSeal · 數位封印</div>
+          <div className="name">BlockSeal · 鏈諭</div>
           <div className="tag">END-TO-END · ON-CHAIN · ZERO-KNOWLEDGE</div>
         </div>
       </div>
