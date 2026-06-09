@@ -52,6 +52,7 @@ export function MessageEditor({ value, onChange }: MessageEditorProps) {
           placeholder={t('placeholder')}
           spellCheck={false}
           maxLength={4096}
+          wrap="off"
         />
       </div>
     </div>

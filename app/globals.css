@@ -283,6 +283,8 @@ textarea.input {
   padding: 16px 16px 16px 54px;
   min-height: 280px;
   caret-color: var(--accent);
+  overflow-x: auto;
+  white-space: pre;
 }
 textarea.input::placeholder { color: var(--text-3); }
 
