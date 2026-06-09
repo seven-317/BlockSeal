@@ -7,11 +7,11 @@ export function ComposeSidebar() {
   return (
     <aside className="side">
       <div className="card side-card">
-        <h3>加密規格</h3>
-        <div className="kv"><span className="k">演算法</span><span className="v accent">AES-256-GCM</span></div>
-        <div className="kv"><span className="k">金鑰交換</span><span className="v">X25519</span></div>
-        <div className="kv"><span className="k">簽章</span><span className="v">Ed25519</span></div>
-        <div className="kv"><span className="k">公鏈</span><span className="v">Ethereum L2</span></div>
+        <h3>{t('specs_title')}</h3>
+        <div className="kv"><span className="k">{t('spec_algo')}</span><span className="v accent">AES-256-GCM</span></div>
+        <div className="kv"><span className="k">{t('spec_kex')}</span><span className="v">X25519</span></div>
+        <div className="kv"><span className="k">{t('spec_sign')}</span><span className="v">Ed25519</span></div>
+        <div className="kv"><span className="k">{t('spec_chain')}</span><span className="v">Ethereum L2</span></div>
       </div>
 
       <div className="card side-card">
@@ -26,11 +26,9 @@ export function ComposeSidebar() {
       </div>
 
       <div className="card side-card">
-        <h3>隱私保證</h3>
+        <h3>{t('privacy_title')}</h3>
         <div style={{ fontSize: '12.5px', color: 'var(--text-2)', lineHeight: '1.6' }}>
-          金鑰僅存在於 URL 的{' '}
-          <b style={{ fontFamily: 'var(--mono)', color: 'var(--accent)' }}>#fragment</b> 中，
-          瀏覽器不會將它傳送至我們的伺服器。
+          {t('privacy_body')}
         </div>
       </div>
     </aside>

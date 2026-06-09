@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useRef } from 'react'
+import { useTranslations } from 'next-intl'
 
 const DEMO_TEXT =
   '銀行密碼提醒：保險箱密碼 7842-3905\n本月帳單帳戶餘額：USD 12,408.55\n\n如果你在 24 小時內沒收到我的電話，\n請聯絡王律師 +886-2-2718-0042，\n並告知他「藍色信封」這個關鍵字。'
@@ -10,6 +11,7 @@ interface MessageEditorProps {
 }
 
 export function MessageEditor({ value, onChange }: MessageEditorProps) {
+  const t = useTranslations('editor')
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const gutterRef = useRef<HTMLDivElement>(null)
 
@@ -54,10 +56,10 @@ export function MessageEditor({ value, onChange }: MessageEditorProps) {
             <path d="M16 13H8" />
             <path d="M16 17H8" />
           </svg>
-          機密訊息內容
+          {t('label')}
         </div>
         <div className="counter">
-          <b>{charCount}</b> / 4096 字元 · <b>{lines}</b> 行
+          <b>{charCount}</b> / 4096 {t('unit_chars')} · <b>{lines}</b> {t('unit_lines')}
         </div>
       </div>
 
@@ -70,7 +72,7 @@ export function MessageEditor({ value, onChange }: MessageEditorProps) {
           className="input"
           value={value}
           onChange={e => onChange(e.target.value)}
-          placeholder={'在此貼上或輸入你要加密的內容\n\n例如：\n  · 私鑰備份提示\n  · 緊急聯絡資訊\n  · 一段只想說給一個人聽的話'}
+          placeholder={t('placeholder')}
           spellCheck={false}
           maxLength={4096}
         />

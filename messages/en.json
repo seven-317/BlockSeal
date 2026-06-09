@@ -1,12 +1,24 @@
 {
   "chrome": {
-    "tabs": { "compose": "01 · COMPOSE", "result": "02 · SEAL", "open": "03 · OPEN" }
+    "tabs": {
+      "compose": "01 · COMPOSE",
+      "result": "02 · SEAL",
+      "open": "03 · OPEN"
+    }
   },
   "compose": {
-    "crumb": { "system": "SYSTEM", "compose": "COMPOSE", "new": "NEW MESSAGE" },
+    "crumb": {
+      "system": "SYSTEM",
+      "compose": "COMPOSE",
+      "new": "NEW MESSAGE"
+    },
     "title": "Seal your message <em>on-chain</em>.",
     "subtitle": "Encrypted entirely in your browser. Only the ciphertext hash is written to the blockchain. The server never sees your plaintext.",
-    "steps": { "input": "Compose", "seal": "Seal", "share": "Share" },
+    "steps": {
+      "input": "Compose",
+      "seal": "Seal",
+      "share": "Share"
+    },
     "btn_clear": "Clear",
     "btn_encrypt": "Encrypt & Seal",
     "encrypting": "Encrypting…",
@@ -19,10 +31,17 @@
     "pwd_placeholder": "Enter password (recipient must know this to decrypt)"
   },
   "result": {
-    "crumb": { "system": "SYSTEM", "seal": "SEAL" },
+    "crumb": {
+      "system": "SYSTEM",
+      "seal": "SEAL"
+    },
     "title": "Sealed. <em>The link is the key.</em>",
     "subtitle": "Your message was encrypted in the browser and recorded on the blockchain. Keep the link safe — it is the only way to decrypt.",
-    "steps": { "input": "Compose", "seal": "Seal", "share": "Share" }
+    "steps": {
+      "input": "Compose",
+      "seal": "Seal",
+      "share": "Share"
+    }
   },
   "shareLink": {
     "title": "Share Link",
@@ -97,10 +116,23 @@
     "step2": "Ciphertext uploaded to server (key is never included)",
     "step3": "SHA-256 hash of ciphertext written to Sepolia blockchain",
     "step4": "Written to blockchain — permanent proof",
-    "step5": "Share link generated (key hidden in URL fragment)"
+    "step5": "Share link generated (key hidden in URL fragment)",
+    "specs_title": "Encryption Specs",
+    "spec_algo": "Algorithm",
+    "spec_kex": "Key Exchange",
+    "spec_sign": "Signature",
+    "spec_chain": "Blockchain",
+    "privacy_title": "Privacy Guarantee",
+    "privacy_body": "The key lives only in the URL #fragment — browsers never send it to our server."
   },
   "meta": {
     "title": "BlockSeal · 鏈諭",
     "description": "End-to-end encrypted messages sealed on the blockchain."
+  },
+  "editor": {
+    "label": "Secret Message",
+    "unit_chars": "chars",
+    "unit_lines": "lines",
+    "placeholder": "Paste or type the content you want to encrypt"
   }
 }

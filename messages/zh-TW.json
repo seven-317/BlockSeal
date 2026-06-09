@@ -1,12 +1,24 @@
 {
   "chrome": {
-    "tabs": { "compose": "01 · COMPOSE", "result": "02 · SEAL", "open": "03 · OPEN" }
+    "tabs": {
+      "compose": "01 · COMPOSE",
+      "result": "02 · SEAL",
+      "open": "03 · OPEN"
+    }
   },
   "compose": {
-    "crumb": { "system": "SYSTEM", "compose": "COMPOSE", "new": "NEW MESSAGE" },
+    "crumb": {
+      "system": "SYSTEM",
+      "compose": "COMPOSE",
+      "new": "NEW MESSAGE"
+    },
     "title": "將你的訊息<em>封印</em>於鏈上。",
     "subtitle": "在裝置上完成加密，僅將密文雜湊寫入鏈上作為存證。我們的伺服器永遠看不到原文。",
-    "steps": { "input": "輸入", "seal": "封印", "share": "分享" },
+    "steps": {
+      "input": "輸入",
+      "seal": "封印",
+      "share": "分享"
+    },
     "btn_clear": "清空",
     "btn_encrypt": "加密並上鏈",
     "encrypting": "加密中…",
@@ -19,10 +31,17 @@
     "pwd_placeholder": "輸入密碼（收件人需知道此密碼才能解密）"
   },
   "result": {
-    "crumb": { "system": "SYSTEM", "seal": "SEAL" },
+    "crumb": {
+      "system": "SYSTEM",
+      "seal": "SEAL"
+    },
     "title": "已封印。<em>連結即金鑰。</em>",
     "subtitle": "訊息已在你的瀏覽器完成加密，並寫入區塊鏈作為存證。請妥善保管下方連結。",
-    "steps": { "input": "輸入", "seal": "封印", "share": "分享" }
+    "steps": {
+      "input": "輸入",
+      "seal": "封印",
+      "share": "分享"
+    }
   },
   "shareLink": {
     "title": "分享連結",
@@ -97,10 +116,23 @@
     "step2": "密文上傳至我們的伺服器（金鑰不在其中）",
     "step3": "密文 SHA-256 雜湊寫入 Sepolia 區塊鏈",
     "step4": "寫入區塊鏈，永久存證",
-    "step5": "產生分享連結（金鑰藏在 URL fragment）"
+    "step5": "產生分享連結（金鑰藏在 URL fragment）",
+    "specs_title": "加密規格",
+    "spec_algo": "演算法",
+    "spec_kex": "金鑰交換",
+    "spec_sign": "簽章",
+    "spec_chain": "公鏈",
+    "privacy_title": "隱私保證",
+    "privacy_body": "金鑰僅存在於 URL 的 #fragment 中，瀏覽器不會將它傳送至我們的伺服器。"
   },
   "meta": {
     "title": "BlockSeal · 鏈諭",
     "description": "端到端加密訊息，僅將密文雜湊寫入鏈上作為存證。"
+  },
+  "editor": {
+    "label": "機密訊息內容",
+    "unit_chars": "字元",
+    "unit_lines": "行",
+    "placeholder": "在此貼上或輸入你要加密的內容"
   }
 }
