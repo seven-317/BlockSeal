@@ -19,10 +19,11 @@ interface ResultScreenProps {
 const DEMO_DATA: SealData = {
   id: 'demo',
   txHash: '0x4a8d2c7f1e9b3a06d5c8f24e1b9a7c3d6e2f5a8b4c7d1e0f3a6b9c2d5e8f1a4b',
-  shareUrl: 'https://blockseal.io/v/demo#k=GhT7nQz9pVxR2KbWfL3sAeXm',
+  shareUrl: 'https://block-seal.vercel.app/v/demo#k=GhT7nQz9pVxR2KbWfL3sAeXm',
 }
 
 export function ResultScreen({ show, sealData, showToast }: ResultScreenProps) {
+  const isDemo = sealData === null
   const data = sealData ?? DEMO_DATA
   const t = useTranslations('result')
 
@@ -34,6 +35,7 @@ export function ResultScreen({ show, sealData, showToast }: ResultScreenProps) {
             <span>{t('crumb.system')}</span><span className="sep">/</span>
             <span>{t('crumb.seal')}</span><span className="sep">/</span>
             <span className="cur">SEALED · {data.txHash.slice(0, 10)}…</span>
+            {isDemo && <span style={{ marginLeft: 8, padding: '1px 7px', borderRadius: 4, fontSize: 10, fontFamily: 'var(--mono)', background: 'var(--bg-3)', color: 'var(--text-2)', border: '1px solid var(--border)', letterSpacing: '0.05em' }}>DEMO</span>}
           </div>
           <h1 className="title" style={{ marginTop: 12 }}>
             {t.rich('title', { em: chunks => <em>{chunks}</em> })}
