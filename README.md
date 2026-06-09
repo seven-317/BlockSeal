@@ -1,52 +1,52 @@
-# BlockSeal · 數位封印
+# BlockSeal
 
-端到端加密訊息平台，將密文雜湊寫入以太坊鏈上作為不可竄改的存證。
+End-to-end encrypted messaging with on-chain integrity proof. Messages are sealed with AES-256-GCM entirely in the browser — the server never sees plaintext. A SHA-256 hash of the ciphertext is written to Ethereum Sepolia as a tamper-proof record.
 
-## 功能特色
+**[中文說明 → README.zh-TW.md](./README.zh-TW.md)**
 
-- **瀏覽器端加密** — AES-256-GCM 加密在使用者裝置上完成，金鑰從不離開瀏覽器，伺服器永遠看不到明文
-- **鏈上存證** — 密文 SHA-256 雜湊寫入 Ethereum Sepolia 智能合約，任何人可在 Etherscan 驗證
-- **Relayer 模式** — 伺服器錢包代付 Gas，使用者不需要錢包或 ETH
-- **閱讀一次即銷毀** — 訊息首次解密後立即從伺服器刪除
-- **密碼保護** — 可選擇以 PBKDF2（200,000 次迭代）對金鑰再加密，收件人需輸入密碼才能解鎖
-- **QR Code 分享** — 自動產生可掃描的 QR Code，金鑰位於 URL fragment，伺服器不會收到
+## Features
 
-## 技術架構
+- **Browser-side encryption** — AES-256-GCM via Web Crypto API. The key never leaves the browser.
+- **On-chain integrity proof** — Ciphertext hash sealed in a Solidity smart contract on Ethereum Sepolia. Verifiable by anyone on Etherscan.
+- **Relayer model** — A server-side wallet pays gas. Users need no wallet, no ETH.
+- **Read-once self-destruct** — Ciphertext is deleted from storage immediately after the first open.
+- **Password protection** — Optional PBKDF2 (200,000 iterations) key-wrapping. Recipients must enter a password to unlock.
+- **QR Code sharing** — Scannable QR code generated from the share URL. The decryption key lives in the URL fragment and is never sent to the server.
+
+## Architecture
 
 ```
-瀏覽器 (加密) ──→ API Route (Supabase 儲存) ──→ Relayer (鏈上存證)
-                                                        │
-收件人瀏覽器 (解密) ←── API Route (下載密文) ←──────────┘
+Browser (encrypt) ──→ API Route (Supabase upload) ──→ Relayer (on-chain seal)
+                                                              │
+Recipient browser (decrypt) ←── API Route (fetch) ←──────────┘
 ```
 
-| 層次 | 技術 |
-|------|------|
-| 框架 | Next.js 16 App Router · React 19 · TypeScript |
-| 樣式 | Tailwind CSS v4 · CSS 自訂屬性設計系統 |
-| 加密 | Web Crypto API (AES-256-GCM · PBKDF2) |
-| 鏈上互動 | viem · Ethereum Sepolia |
-| 資料庫 | Supabase (PostgreSQL + Storage) |
-| 合約開發 | Solidity 0.8.24 |
+| Layer | Technology |
+|-------|------------|
+| Framework | Next.js 16 App Router · React 19 · TypeScript |
+| Styling | Tailwind CSS v4 · CSS custom properties design system |
+| Crypto | Web Crypto API (AES-256-GCM · PBKDF2) |
+| Chain | viem · Ethereum Sepolia |
+| Storage | Supabase (PostgreSQL + Storage) |
+| Contract | Solidity 0.8.24 |
 
-## 快速開始
+## Getting Started
 
-### 環境需求
+### Prerequisites
 
 - Node.js 20+
-- Supabase 專案
-- Ethereum Sepolia 錢包（含少量測試 ETH）
+- A Supabase project
+- An Ethereum Sepolia wallet with a small amount of test ETH
 
-### 安裝
+### Install
 
 ```bash
-git clone https://github.com/your-username/blockseal.git
-cd blockseal
+git clone https://github.com/seven-317/BlockSeal.git
+cd BlockSeal
 npm install
 ```
 
-### 環境變數
-
-複製範本並填入對應值：
+### Environment Variables
 
 ```bash
 cp .env.local.example .env.local
@@ -60,92 +60,92 @@ SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
 
 # Ethereum Sepolia
 SEPOLIA_RPC_URL=https://ethereum-sepolia-rpc.publicnode.com
-RELAYER_PRIVATE_KEY=0x...        # 伺服器代付 Gas 的錢包
-DEPLOYER_PRIVATE_KEY=0x...       # 部署合約用的錢包
-CONTRACT_ADDRESS=0x...           # 部署後填入
+RELAYER_PRIVATE_KEY=0x...     # Server wallet that pays gas
+DEPLOYER_PRIVATE_KEY=0x...    # Wallet used to deploy the contract
+CONTRACT_ADDRESS=0x...        # Filled in after deployment
 ```
 
-> 取得 Sepolia 測試 ETH：[sepolia-faucet.pk910.de](https://sepolia-faucet.pk910.de)
+> Get Sepolia test ETH at [sepolia-faucet.pk910.de](https://sepolia-faucet.pk910.de)
 
-### 初始化資料庫
+### Database Setup
 
-在 Supabase Dashboard → SQL Editor 執行 `supabase/migrations/001_init.sql` 的內容。
+Run `supabase/migrations/001_init.sql` in the Supabase Dashboard → SQL Editor.
 
-同時在 Supabase → Storage 建立名為 `ciphertexts` 的 **private** bucket。
+Then create a **private** Storage bucket named `ciphertexts` in Supabase → Storage.
 
-### 部署智能合約
+### Deploy the Smart Contract
 
 ```bash
 node scripts/deploy-simple.mjs
 ```
 
-執行後複製輸出的 `CONTRACT_ADDRESS=0x...` 填入 `.env.local`。
+Copy the printed `CONTRACT_ADDRESS=0x...` into `.env.local`.
 
-### 啟動開發伺服器
+### Run
 
 ```bash
 npm run dev
 ```
 
-打開 [http://localhost:3000](http://localhost:3000)
+Open [http://localhost:3000](http://localhost:3000).
 
-## 安全設計
+## Security Design
 
-### 金鑰永不上傳
-
-```
-分享連結結構：
-https://example.com/v/{id}#{k=<AES金鑰>&iv=<初始向量>}
-                          ↑
-                    fragment 不會發送至伺服器
-```
-
-### 加上密碼時的流程
+### The key never reaches the server
 
 ```
-密碼 + 隨機 salt
-      ↓ PBKDF2 (200,000 次)
-   wrapping key
-      ↓ AES-GCM 包裝
-   encrypted AES key  ←── 存入 URL fragment（salt 與 kiv 一併存入）
+Share URL structure:
+https://example.com/v/{id}#{k=<AES key>&iv=<IV>}
+                         ↑
+               URL fragment — never sent to the server
 ```
 
-### 完整資料流
+### Password protection flow
 
-1. 使用者輸入明文 → 瀏覽器產生 AES-256 金鑰 + IV
-2. 加密明文 → 計算密文 SHA-256 雜湊
-3. 密文上傳至 Supabase Storage；雜湊由 Relayer 寫入鏈上合約
-4. 分享連結 = `/v/{id}#{金鑰&IV}`（金鑰在 fragment，伺服器不可見）
-5. 收件人開啟連結 → 下載密文 → 在瀏覽器解密 → 驗證雜湊與鏈上一致
-6. 呼叫 consume API → 密文從 Storage 刪除、標記已開啟
+```
+Password + random salt
+      ↓ PBKDF2 (200,000 iterations)
+  wrapping key
+      ↓ AES-GCM wrap
+  encrypted AES key  ──→ stored in URL fragment (alongside salt & kiv)
+```
 
-## 專案結構
+### Full data flow
+
+1. User types plaintext → browser generates AES-256 key + IV
+2. Encrypt plaintext → compute SHA-256 hash of ciphertext
+3. Upload ciphertext to Supabase Storage; relayer writes hash to the on-chain contract
+4. Share URL = `/v/{id}#{key&IV}` (key in fragment, invisible to server)
+5. Recipient opens URL → downloads ciphertext → decrypts in browser → verifies hash matches on-chain record
+6. `consume` API call → ciphertext deleted from Storage, record marked as opened
+
+## Project Structure
 
 ```
 app/
 ├── api/
-│   ├── seal/route.ts          # 接收密文，上鏈，寫入 DB
+│   ├── seal/route.ts              # Receive ciphertext, seal on-chain, write to DB
 │   └── open/[id]/
-│       ├── route.ts           # 取得密文（驗證守衛）
-│       └── consume/route.ts   # 標記已讀、刪除密文
-├── v/[id]/page.tsx            # 分享連結解密頁
-└── page.tsx                   # 主頁面
+│       ├── route.ts               # Fetch ciphertext (with guards)
+│       └── consume/route.ts       # Mark as opened, delete ciphertext
+├── v/[id]/page.tsx                # Share link decrypt page
+└── page.tsx                       # Main page
 
 components/
-├── compose/                   # 訊息撰寫、加密流程
-├── result/                    # 加密結果、QR Code、鏈上資訊
-└── decrypt/                   # 解密流程、密碼輸入
+├── compose/                       # Message editor, encryption flow
+├── result/                        # Result screen, QR code, chain info
+└── decrypt/                       # Decrypt flow, password input
 
 lib/
-├── crypto.ts                  # Web Crypto API 封裝
-├── chain.ts                   # viem Relayer
-└── supabase.ts                # Supabase Admin client
+├── crypto.ts                      # Web Crypto API wrapper
+├── chain.ts                       # viem relayer
+└── supabase.ts                    # Supabase admin client
 
 contracts/
-└── BlockSeal.sol              # 事件型智能合約（最小化 Gas）
+└── BlockSeal.sol                  # Event-only contract (minimal gas)
 ```
 
-## 智能合約
+## Smart Contract
 
 ```solidity
 event Sealed(
@@ -160,8 +160,8 @@ function seal(bytes32 id, bytes32 ciphertextHash) external {
 }
 ```
 
-合約設計為純事件記錄，不儲存任何狀態，Gas 消耗約 21,000–25,000。
+Event-only design: no state storage, ~21,000–25,000 gas per seal.
 
 ## License
 
-MIT
+[MIT](./LICENSE)
