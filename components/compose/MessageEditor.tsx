@@ -2,9 +2,6 @@
 import { useEffect, useRef } from 'react'
 import { useTranslations } from 'next-intl'
 
-const DEMO_TEXT =
-  '銀行密碼提醒：保險箱密碼 7842-3905\n本月帳單帳戶餘額：USD 12,408.55\n\n如果你在 24 小時內沒收到我的電話，\n請聯絡王律師 +886-2-2718-0042，\n並告知他「藍色信封」這個關鍵字。'
-
 interface MessageEditorProps {
   value: string
   onChange: (v: string) => void
@@ -81,4 +78,4 @@ export function MessageEditor({ value, onChange }: MessageEditorProps) {
   )
 }
 
-export { DEMO_TEXT }
+export const DEMO_TEXT = ''

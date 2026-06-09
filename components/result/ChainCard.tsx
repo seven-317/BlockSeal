@@ -1,4 +1,5 @@
 'use client'
+import { useState, useEffect } from 'react'
 import { useTranslations } from 'next-intl'
 
 interface ChainCardProps {
@@ -8,13 +9,16 @@ interface ChainCardProps {
 
 export function ChainCard({ txHash, showToast }: ChainCardProps) {
   const t = useTranslations('chainCard')
+  const [sealedAt, setSealedAt] = useState('')
+
+  useEffect(() => {
+    setSealedAt(new Date().toISOString().replace('T', ' ').slice(0, 19) + ' UTC')
+  }, [])
 
   const copyHash = async () => {
     try { await navigator.clipboard.writeText(txHash) } catch {}
     showToast(t('copied'))
   }
-
-  const sealedAt = new Date().toISOString().replace('T', ' ').slice(0, 19) + ' UTC'
 
   return (
     <div className="card chain-card">
@@ -45,7 +49,7 @@ export function ChainCard({ txHash, showToast }: ChainCardProps) {
       </div>
 
       <div className="chain-row">
-        <div className="label">封印時間</div>
+        <div className="label">{t('label_sealed_at')}</div>
         <div className="val" style={{ fontSize: 12, color: 'var(--text-2)' }}>{sealedAt}</div>
       </div>
 

@@ -66,7 +66,8 @@
     "chain_val": "Ethereum Sepolia",
     "label_contract": "Contract",
     "label_proof": "Proof Method",
-    "proof_val": "SHA-256 Event Log"
+    "proof_val": "SHA-256 Event Log",
+    "label_sealed_at": "Sealed At"
   },
   "vault": {
     "locked_title": "Encrypted Message · Awaiting Unlock",
@@ -133,6 +134,7 @@
     "label": "Secret Message",
     "unit_chars": "chars",
     "unit_lines": "lines",
-    "placeholder": "Paste or type the content you want to encrypt"
+    "placeholder": "Paste or type the content you want to encrypt",
+    "demo_text": "Bank reminder: Safe combination 7842-3905\nCurrent account balance: USD 12,408.55\n\nIf you haven't heard from me within 24 hours,\nplease contact Attorney Wang at +886-2-2718-0042\nand mention the keyword \"Blue Envelope\"."
   }
 }

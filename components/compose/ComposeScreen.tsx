@@ -12,11 +12,12 @@ interface ComposeScreenProps {
 }
 
 export function ComposeScreen({ show, onEncrypt }: ComposeScreenProps) {
-  const [message, setMessage] = useState(DEMO_TEXT)
+  const t = useTranslations('compose')
+  const tEditor = useTranslations('editor')
+  const [message, setMessage] = useState(() => tEditor('demo_text'))
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const t = useTranslations('compose')
 
   const handleEncrypt = async () => {
     if (!message.trim()) return
