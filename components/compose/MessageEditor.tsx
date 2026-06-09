@@ -16,32 +16,12 @@ export function MessageEditor({ value, onChange }: MessageEditorProps) {
   const charCount = value.length
 
   useEffect(() => {
-    const ta = textareaRef.current
     const gt = gutterRef.current
-    if (!ta || !gt) return
-    const lh = parseFloat(getComputedStyle(ta).lineHeight)
-    const visible = Math.max(lines, Math.floor((ta.clientHeight - 32) / lh))
-    const total = Math.max(lines, visible)
-    gt.innerHTML = Array.from({ length: total }, (_, i) =>
+    if (!gt) return
+    gt.innerHTML = Array.from({ length: lines }, (_, i) =>
       `<div>${String(i + 1).padStart(2, '0')}</div>`
     ).join('')
-  }, [value, lines])
-
-  useEffect(() => {
-    const handler = () => {
-      const ta = textareaRef.current
-      const gt = gutterRef.current
-      if (!ta || !gt) return
-      const lh = parseFloat(getComputedStyle(ta).lineHeight)
-      const lineCount = Math.max(1, ta.value.split('\n').length)
-      const visible = Math.max(lineCount, Math.floor((ta.clientHeight - 32) / lh))
-      gt.innerHTML = Array.from({ length: Math.max(lineCount, visible) }, (_, i) =>
-        `<div>${String(i + 1).padStart(2, '0')}</div>`
-      ).join('')
-    }
-    window.addEventListener('resize', handler)
-    return () => window.removeEventListener('resize', handler)
-  }, [])
+  }, [lines])
 
   return (
     <div>
