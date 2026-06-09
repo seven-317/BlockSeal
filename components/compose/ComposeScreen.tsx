@@ -1,5 +1,6 @@
 'use client'
 import { useState } from 'react'
+import { useTranslations } from 'next-intl'
 import { DEMO_TEXT, MessageEditor } from './MessageEditor'
 import { OptionChips } from './OptionChips'
 import { ComposeSidebar } from './ComposeSidebar'
@@ -15,6 +16,7 @@ export function ComposeScreen({ show, onEncrypt }: ComposeScreenProps) {
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const t = useTranslations('compose')
 
   const handleEncrypt = async () => {
     if (!message.trim()) return
@@ -22,10 +24,8 @@ export function ComposeScreen({ show, onEncrypt }: ComposeScreenProps) {
     setError(null)
 
     try {
-      // 1. Encrypt in browser (AES-256-GCM, optionally password-wrapped)
       const { ciphertextBase64, cipherHash, shareFragment } = await encryptMessage(message, password || undefined)
 
-      // 2. Send ciphertext + hash to server (key never leaves browser)
       const res = await fetch('/api/seal', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -35,14 +35,13 @@ export function ComposeScreen({ show, onEncrypt }: ComposeScreenProps) {
       if (!res.ok) throw new Error(await res.text())
       const { id, txHash } = await res.json()
 
-      // 3. Compose share URL — key lives only in the fragment
       const shareUrl = `${window.location.origin}/v/${id}#${shareFragment}`
 
       setLoading(false)
       onEncrypt({ id, txHash, shareUrl })
     } catch (err) {
       setLoading(false)
-      setError(err instanceof Error ? err.message : '加密失敗，請稍後再試。')
+      setError(err instanceof Error ? err.message : t('error'))
     }
   }
 
@@ -56,23 +55,21 @@ export function ComposeScreen({ show, onEncrypt }: ComposeScreenProps) {
       <div className="screen-meta">
         <div>
           <div className="crumb">
-            <span>SYSTEM</span><span className="sep">/</span>
-            <span>COMPOSE</span><span className="sep">/</span>
-            <span className="cur">NEW MESSAGE</span>
+            <span>{t('crumb.system')}</span><span className="sep">/</span>
+            <span>{t('crumb.compose')}</span><span className="sep">/</span>
+            <span className="cur">{t('crumb.new')}</span>
           </div>
           <h1 className="title" style={{ marginTop: 12 }}>
-            將你的訊息<em>封印</em>於鏈上。
+            {t.rich('title', { em: chunks => <em>{chunks}</em> })}
           </h1>
-          <p className="subtitle">
-            在裝置上完成加密，僅將密文雜湊寫入鏈上作為存證。我們的伺服器永遠看不到原文。
-          </p>
+          <p className="subtitle">{t('subtitle')}</p>
         </div>
         <div className="step-indicator">
-          <div className="step active"><span className="n">1</span><span>輸入</span></div>
+          <div className="step active"><span className="n">1</span><span>{t('steps.input')}</span></div>
           <span style={{ width: 18, height: 1, background: 'var(--border)' }} />
-          <div className="step"><span className="n">2</span><span>封印</span></div>
+          <div className="step"><span className="n">2</span><span>{t('steps.seal')}</span></div>
           <span style={{ width: 18, height: 1, background: 'var(--border)' }} />
-          <div className="step"><span className="n">3</span><span>分享</span></div>
+          <div className="step"><span className="n">3</span><span>{t('steps.share')}</span></div>
         </div>
       </div>
 
@@ -101,7 +98,7 @@ export function ComposeScreen({ show, onEncrypt }: ComposeScreenProps) {
                 <path d="M3 6h18" /><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
                 <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
               </svg>
-              清空
+              {t('btn_clear')}
             </button>
             <button
               className={`btn btn-primary${loading ? ' loading' : ''}`}
@@ -112,7 +109,7 @@ export function ComposeScreen({ show, onEncrypt }: ComposeScreenProps) {
                 <rect x="3" y="11" width="18" height="11" rx="2" />
                 <path d="M7 11V7a5 5 0 0 1 10 0v4" />
               </svg>
-              <span className="lbl">加密並上鏈</span>
+              <span className="lbl">{loading ? t('encrypting') : t('btn_encrypt')}</span>
             </button>
           </div>
         </div>

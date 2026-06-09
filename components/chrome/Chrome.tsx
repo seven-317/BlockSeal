@@ -1,6 +1,8 @@
 'use client'
 import { useGasTicker } from '@/hooks/useGasTicker'
 import { useTheme } from '@/hooks/useTheme'
+import { useTranslations, useLocale } from 'next-intl'
+import { useRouter, usePathname } from '@/i18n/navigation'
 
 type Screen = 'compose' | 'result' | 'decrypt'
 
@@ -13,15 +15,24 @@ const SUN_PATH =
   '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>'
 const MOON_PATH = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />'
 
-const TABS: { id: Screen; label: string }[] = [
-  { id: 'compose', label: '01 · COMPOSE' },
-  { id: 'result', label: '02 · SEAL' },
-  { id: 'decrypt', label: '03 · OPEN' },
-]
-
 export function Chrome({ screen, onScreenChange }: ChromeProps) {
   const gasLabel = useGasTicker()
   const { theme, toggle } = useTheme()
+  const t = useTranslations('chrome')
+  const router = useRouter()
+  const pathname = usePathname()
+  const locale = useLocale()
+
+  const TABS: { id: Screen; label: string }[] = [
+    { id: 'compose', label: t('tabs.compose') },
+    { id: 'result', label: t('tabs.result') },
+    { id: 'decrypt', label: t('tabs.open') },
+  ]
+
+  const switchLocale = () => {
+    const next = locale === 'zh-TW' ? 'en' : 'zh-TW'
+    router.replace(pathname, { locale: next })
+  }
 
   return (
     <header className="chrome">
@@ -58,6 +69,9 @@ export function Chrome({ screen, onScreenChange }: ChromeProps) {
           <span className="pulse" />
           <span>{gasLabel}</span>
         </div>
+        <button className="theme-toggle" onClick={switchLocale} aria-label="Switch language">
+          {locale === 'zh-TW' ? 'EN' : '中'}
+        </button>
         <button className="theme-toggle" onClick={toggle} aria-label="Toggle theme">
           <svg
             viewBox="0 0 24 24"

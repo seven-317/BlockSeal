@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react'
+import { useTranslations } from 'next-intl'
 import { AmbientBg } from '@/components/ui/AmbientBg'
 import { Chrome } from '@/components/chrome/Chrome'
 import { Footer } from '@/components/ui/Footer'
@@ -7,12 +8,13 @@ import { VaultCard } from '@/components/decrypt/VaultCard'
 import { DecryptSidebar } from '@/components/decrypt/DecryptSidebar'
 
 interface PageProps {
-  params: Promise<{ id: string }>
+  params: Promise<{ locale: string; id: string }>
 }
 
 export default function VaultPage({ params }: PageProps) {
   const [id, setId] = useState<string | null>(null)
   const [fragment, setFragment] = useState('')
+  const t = useTranslations('vaultPage')
 
   useEffect(() => {
     params.then(p => setId(p.id))
@@ -32,18 +34,16 @@ export default function VaultPage({ params }: PageProps) {
               <span className="cur">/v/{id ?? '…'}</span>
             </div>
             <h1 className="title" style={{ marginTop: 12 }}>
-              <em>有人</em>為你封印了一段訊息。
+              {t.rich('title', { em: chunks => <em>{chunks}</em> })}
             </h1>
-            <p className="subtitle">
-              在你按下解鎖之前，沒有任何人 - 包含 BlockSeal - 看得見內容。閱讀後即刻消失。
-            </p>
+            <p className="subtitle">{t('subtitle')}</p>
           </div>
           <div className="step-indicator">
-            <div className="step done"><span className="n">✓</span><span>已封印</span></div>
+            <div className="step done"><span className="n">✓</span><span>{t('step_sealed')}</span></div>
             <span style={{ width: 18, height: 1, background: 'var(--accent)' }} />
-            <div className="step done"><span className="n">✓</span><span>已送達</span></div>
+            <div className="step done"><span className="n">✓</span><span>{t('step_delivered')}</span></div>
             <span style={{ width: 18, height: 1, background: 'var(--accent)' }} />
-            <div className="step active"><span className="n">3</span><span>待解鎖</span></div>
+            <div className="step active"><span className="n">3</span><span>{t('step_waiting')}</span></div>
           </div>
         </div>
 

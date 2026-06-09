@@ -1,4 +1,9 @@
+'use client'
+import { useTranslations } from 'next-intl'
+
 export function Footer() {
+  const t = useTranslations('footer')
+
   return (
     <footer>
       <div className="l">

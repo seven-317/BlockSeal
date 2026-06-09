@@ -1,0 +1,106 @@
+{
+  "chrome": {
+    "tabs": { "compose": "01 · COMPOSE", "result": "02 · SEAL", "open": "03 · OPEN" }
+  },
+  "compose": {
+    "crumb": { "system": "SYSTEM", "compose": "COMPOSE", "new": "NEW MESSAGE" },
+    "title": "將你的訊息<em>封印</em>於鏈上。",
+    "subtitle": "在裝置上完成加密，僅將密文雜湊寫入鏈上作為存證。我們的伺服器永遠看不到原文。",
+    "steps": { "input": "輸入", "seal": "封印", "share": "分享" },
+    "btn_clear": "清空",
+    "btn_encrypt": "加密並上鏈",
+    "encrypting": "加密中…",
+    "error": "加密失敗，請稍後再試。"
+  },
+  "options": {
+    "once": "閱讀一次",
+    "expire": "24 小時後失效",
+    "password": "加上密碼",
+    "pwd_placeholder": "輸入密碼（收件人需知道此密碼才能解密）"
+  },
+  "result": {
+    "crumb": { "system": "SYSTEM", "seal": "SEAL" },
+    "title": "已封印。<em>連結即金鑰。</em>",
+    "subtitle": "訊息已在你的瀏覽器完成加密，並寫入區塊鏈作為存證。請妥善保管下方連結。",
+    "steps": { "input": "輸入", "seal": "封印", "share": "分享" }
+  },
+  "shareLink": {
+    "title": "分享連結",
+    "copy": "複製連結",
+    "copied": "已複製",
+    "meta_size": "大小",
+    "meta_size_val": "加密訊息",
+    "meta_expire": "過期時間",
+    "meta_expire_val": "閱讀一次",
+    "meta_chain": "鏈",
+    "qr_title": "掃描 QR 開啟",
+    "qr_sub": "行動裝置掃描即可解密。金鑰位於 URL fragment，伺服器不會收到。",
+    "qr_warn": "此連結僅顯示一次，請立刻保存"
+  },
+  "chainCard": {
+    "title": "區塊鏈存證",
+    "verify": "於 Etherscan 驗證",
+    "copy_hash": "複製雜湊",
+    "copied": "已複製",
+    "label_tx": "交易雜湊",
+    "label_chain": "網路",
+    "chain_val": "Ethereum Sepolia",
+    "label_contract": "合約",
+    "label_proof": "存證方式",
+    "proof_val": "SHA-256 事件記錄"
+  },
+  "vault": {
+    "locked_title": "加密訊息 · 等待解鎖",
+    "locked_sub_demo": "DEMO MODE · FROM 0x9f…4c21",
+    "unlocked_title": "已解密 · 訊息僅顯示一次",
+    "chain_verified": "VERIFIED · Sepolia",
+    "chain_demo": "DEMO",
+    "h2": "端到端加密訊息",
+    "desc": "本訊息在傳送端的瀏覽器內完成加密，伺服器<b>不保留任何備份</b>。一旦解鎖，內容將立即從伺服器銷毀，僅留下區塊鏈上的雜湊存證。",
+    "promise_zero": "伺服器零知識",
+    "promise_once": "閱讀後消失",
+    "promise_chain": "鏈上完整性驗證",
+    "promise_aes": "AES-256-GCM",
+    "unlock": "解鎖訊息",
+    "unlocking": "解密中…",
+    "confirm": "按下後即視為您已閱讀，訊息將被銷毀。",
+    "pwd_label": "此訊息受密碼保護，請輸入密碼後解鎖",
+    "pwd_placeholder": "輸入密碼…",
+    "integrity_ok": "訊息完整性已驗證",
+    "integrity_ok_sub": "SHA-256 雜湊與鏈上紀錄一致",
+    "integrity_fail": "完整性驗證失敗",
+    "integrity_fail_sub": "SHA-256 雜湊不符，請注意",
+    "etherscan": "於 Etherscan 驗證",
+    "destruct": "離開此頁面後，訊息將永久消失。剩餘",
+    "err_opened": "此訊息已被開啟，無法再次讀取。",
+    "err_expired": "此訊息已過期。",
+    "err_notfound": "找不到此訊息，可能已被銷毀。",
+    "err_decrypt": "解密失敗：",
+    "decrypted_label": "DECRYPTED MESSAGE"
+  },
+  "vaultPage": {
+    "title": "<em>有人</em>為你封印了一段訊息。",
+    "subtitle": "在你按下解鎖之前，沒有任何人 - 包含 BlockSeal - 看得見內容。閱讀後即刻消失。",
+    "step_sealed": "已封印",
+    "step_delivered": "已送達",
+    "step_waiting": "待解鎖"
+  },
+  "footer": {
+    "copy": "BlockSeal · 鏈諭 — 端到端加密，鏈上存證。",
+    "zero": "伺服器零知識",
+    "once": "閱讀一次",
+    "aes": "AES-256-GCM"
+  },
+  "sidebar_compose": {
+    "how_title": "運作原理",
+    "step1": "訊息在你的瀏覽器完成 AES-256-GCM 加密",
+    "step2": "密文上傳至我們的伺服器（金鑰不在其中）",
+    "step3": "密文 SHA-256 雜湊寫入 Sepolia 區塊鏈",
+    "step4": "寫入區塊鏈，永久存證",
+    "step5": "產生分享連結（金鑰藏在 URL fragment）"
+  },
+  "meta": {
+    "title": "BlockSeal · 鏈諭",
+    "description": "端到端加密訊息，僅將密文雜湊寫入鏈上作為存證。"
+  }
+}

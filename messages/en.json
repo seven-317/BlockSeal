@@ -1,0 +1,106 @@
+{
+  "chrome": {
+    "tabs": { "compose": "01 · COMPOSE", "result": "02 · SEAL", "open": "03 · OPEN" }
+  },
+  "compose": {
+    "crumb": { "system": "SYSTEM", "compose": "COMPOSE", "new": "NEW MESSAGE" },
+    "title": "Seal your message <em>on-chain</em>.",
+    "subtitle": "Encrypted entirely in your browser. Only the ciphertext hash is written to the blockchain. The server never sees your plaintext.",
+    "steps": { "input": "Compose", "seal": "Seal", "share": "Share" },
+    "btn_clear": "Clear",
+    "btn_encrypt": "Encrypt & Seal",
+    "encrypting": "Encrypting…",
+    "error": "Encryption failed. Please try again."
+  },
+  "options": {
+    "once": "Read Once",
+    "expire": "Expire in 24h",
+    "password": "Password Lock",
+    "pwd_placeholder": "Enter password (recipient must know this to decrypt)"
+  },
+  "result": {
+    "crumb": { "system": "SYSTEM", "seal": "SEAL" },
+    "title": "Sealed. <em>The link is the key.</em>",
+    "subtitle": "Your message was encrypted in the browser and recorded on the blockchain. Keep the link safe — it is the only way to decrypt.",
+    "steps": { "input": "Compose", "seal": "Seal", "share": "Share" }
+  },
+  "shareLink": {
+    "title": "Share Link",
+    "copy": "Copy Link",
+    "copied": "Copied",
+    "meta_size": "Size",
+    "meta_size_val": "Encrypted",
+    "meta_expire": "Expires",
+    "meta_expire_val": "Read Once",
+    "meta_chain": "Chain",
+    "qr_title": "Scan QR to Open",
+    "qr_sub": "Scan with a mobile device to decrypt. The key is in the URL fragment and never sent to the server.",
+    "qr_warn": "This link is shown only once — save it now"
+  },
+  "chainCard": {
+    "title": "On-Chain Proof",
+    "verify": "Verify on Etherscan",
+    "copy_hash": "Copy Hash",
+    "copied": "Copied",
+    "label_tx": "Transaction Hash",
+    "label_chain": "Network",
+    "chain_val": "Ethereum Sepolia",
+    "label_contract": "Contract",
+    "label_proof": "Proof Method",
+    "proof_val": "SHA-256 Event Log"
+  },
+  "vault": {
+    "locked_title": "Encrypted Message · Awaiting Unlock",
+    "locked_sub_demo": "DEMO MODE · FROM 0x9f…4c21",
+    "unlocked_title": "Decrypted · Shown Once Only",
+    "chain_verified": "VERIFIED · Sepolia",
+    "chain_demo": "DEMO",
+    "h2": "End-to-End Encrypted Message",
+    "desc": "This message was encrypted in the sender's browser. The server <b>retains no backup</b>. Once unlocked, the content is immediately destroyed on the server — only the blockchain hash remains.",
+    "promise_zero": "Zero-Knowledge Server",
+    "promise_once": "Self-Destructs on Read",
+    "promise_chain": "On-Chain Integrity",
+    "promise_aes": "AES-256-GCM",
+    "unlock": "Unlock Message",
+    "unlocking": "Decrypting…",
+    "confirm": "Opening this message counts as reading it. It will be destroyed immediately.",
+    "pwd_label": "This message is password-protected. Enter the password to unlock.",
+    "pwd_placeholder": "Enter password…",
+    "integrity_ok": "Integrity Verified",
+    "integrity_ok_sub": "SHA-256 hash matches on-chain record",
+    "integrity_fail": "Integrity Check Failed",
+    "integrity_fail_sub": "SHA-256 hash mismatch — proceed with caution",
+    "etherscan": "Verify on Etherscan",
+    "destruct": "Leaving this page will permanently destroy the message. Time left:",
+    "err_opened": "This message has already been opened and cannot be read again.",
+    "err_expired": "This message has expired.",
+    "err_notfound": "Message not found — it may have been destroyed.",
+    "err_decrypt": "Decryption failed: ",
+    "decrypted_label": "DECRYPTED MESSAGE"
+  },
+  "vaultPage": {
+    "title": "<em>Someone</em> sealed a message for you.",
+    "subtitle": "No one — not even BlockSeal — can read it until you unlock it. It disappears after reading.",
+    "step_sealed": "Sealed",
+    "step_delivered": "Delivered",
+    "step_waiting": "Awaiting"
+  },
+  "footer": {
+    "copy": "BlockSeal · 鏈諭 — End-to-end encrypted, on-chain verified.",
+    "zero": "Zero-Knowledge Server",
+    "once": "Read Once",
+    "aes": "AES-256-GCM"
+  },
+  "sidebar_compose": {
+    "how_title": "How It Works",
+    "step1": "Message is AES-256-GCM encrypted in your browser",
+    "step2": "Ciphertext uploaded to server (key is never included)",
+    "step3": "SHA-256 hash of ciphertext written to Sepolia blockchain",
+    "step4": "Written to blockchain — permanent proof",
+    "step5": "Share link generated (key hidden in URL fragment)"
+  },
+  "meta": {
+    "title": "BlockSeal · 鏈諭",
+    "description": "End-to-end encrypted messages sealed on the blockchain."
+  }
+}

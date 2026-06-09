@@ -1,40 +1,6 @@
 'use client'
 import { useState } from 'react'
-
-const CHIPS = [
-  {
-    id: 'once',
-    defaultOn: true,
-    label: '閱讀一次',
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M3 6h18" />
-        <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
-        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
-      </svg>
-    ),
-  },
-  {
-    id: 'expire',
-    label: '24 小時後失效',
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="12" cy="12" r="10" />
-        <path d="M12 6v6l4 2" />
-      </svg>
-    ),
-  },
-  {
-    id: 'pwd',
-    label: '加上密碼',
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="3" y="11" width="18" height="11" rx="2" />
-        <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-      </svg>
-    ),
-  },
-]
+import { useTranslations } from 'next-intl'
 
 interface OptionChipsProps {
   password: string
@@ -42,10 +8,43 @@ interface OptionChipsProps {
 }
 
 export function OptionChips({ password, onPasswordChange }: OptionChipsProps) {
-  const [active, setActive] = useState<Set<string>>(
-    new Set(CHIPS.filter(c => c.defaultOn).map(c => c.id))
-  )
+  const t = useTranslations('options')
+  const [active, setActive] = useState<Set<string>>(new Set(['once']))
   const [showPwd, setShowPwd] = useState(false)
+
+  const CHIPS = [
+    {
+      id: 'once',
+      label: t('once'),
+      icon: (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M3 6h18" />
+          <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
+        </svg>
+      ),
+    },
+    {
+      id: 'expire',
+      label: t('expire'),
+      icon: (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="12" cy="12" r="10" />
+          <path d="M12 6v6l4 2" />
+        </svg>
+      ),
+    },
+    {
+      id: 'pwd',
+      label: t('password'),
+      icon: (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+          <rect x="3" y="11" width="18" height="11" rx="2" />
+          <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+        </svg>
+      ),
+    },
+  ]
 
   const toggle = (id: string) => {
     setActive(prev => {
@@ -80,7 +79,7 @@ export function OptionChips({ password, onPasswordChange }: OptionChipsProps) {
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, paddingTop: 2 }}>
           <input
             type={showPwd ? 'text' : 'password'}
-            placeholder="輸入密碼（收件人需知道此密碼才能解密）"
+            placeholder={t('pwd_placeholder')}
             value={password}
             onChange={e => onPasswordChange(e.target.value)}
             style={{
@@ -101,7 +100,6 @@ export function OptionChips({ password, onPasswordChange }: OptionChipsProps) {
               background: 'none', border: 'none', cursor: 'pointer',
               color: 'var(--text-3)', padding: 4, flexShrink: 0,
             }}
-            title={showPwd ? '隱藏' : '顯示'}
           >
             {showPwd ? (
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

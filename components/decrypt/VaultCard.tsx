@@ -1,11 +1,12 @@
 'use client'
 import { useRef, useState } from 'react'
+import { useTranslations } from 'next-intl'
 import { useCountdown } from '@/hooks/useCountdown'
 import { decryptMessage, fragmentNeedsPassword } from '@/lib/crypto'
 
 interface VaultCardProps {
-  id?: string        // real message id (from /v/[id] page)
-  fragment?: string  // window.location.hash
+  id?: string
+  fragment?: string
 }
 
 const DEMO_TEXT =
@@ -14,6 +15,7 @@ const DEMO_HASH = '5,738,291'
 
 export function VaultCard({ id, fragment }: VaultCardProps) {
   const isDemoMode = !id
+  const t = useTranslations('vault')
 
   const needsPassword = !isDemoMode && !!fragment && fragmentNeedsPassword(fragment)
 
@@ -39,7 +41,6 @@ export function VaultCard({ id, fragment }: VaultCardProps) {
       let isVerified = false
 
       if (!isDemoMode && id && fragment) {
-        // 1. Fetch ciphertext from API
         const res = await fetch(`/api/open/${id}`)
         if (!res.ok) {
           const body = await res.json()
@@ -47,13 +48,11 @@ export function VaultCard({ id, fragment }: VaultCardProps) {
         }
         const data = await res.json()
 
-        // 2. Decrypt in browser
         const result = await decryptMessage(data.ciphertextBase64, fragment, needsPassword ? pwdInput : undefined)
         plaintext = result.plaintext
         isVerified = result.localHash === data.cipherHash
         setTxHash(data.txHash)
 
-        // 3. Consume (delete from server, mark opened)
         await fetch(`/api/open/${id}/consume`, { method: 'POST' })
       }
 
@@ -64,10 +63,10 @@ export function VaultCard({ id, fragment }: VaultCardProps) {
     } catch (err: unknown) {
       setLoading(false)
       const msg = err instanceof Error ? err.message : 'unknown error'
-      if (msg === 'already opened') setError('此訊息已被開啟，無法再次讀取。')
-      else if (msg === 'expired') setError('此訊息已過期。')
-      else if (msg === 'not found') setError('找不到此訊息，可能已被銷毀。')
-      else setError(`解密失敗：${msg}`)
+      if (msg === 'already opened') setError(t('err_opened'))
+      else if (msg === 'expired') setError(t('err_expired'))
+      else if (msg === 'not found') setError(t('err_notfound'))
+      else setError(`${t('err_decrypt')}${msg}`)
     }
   }
 
@@ -109,33 +108,30 @@ export function VaultCard({ id, fragment }: VaultCardProps) {
         <div className="left">
           <div className="seal-mini">{unlocked ? UNLOCK_ICON : LOCK_ICON}</div>
           <div>
-            <div className="t">{unlocked ? '已解密 · 訊息僅顯示一次' : '加密訊息 · 等待解鎖'}</div>
+            <div className="t">{unlocked ? t('unlocked_title') : t('locked_title')}</div>
             <div className="s">
-              {isDemoMode ? 'DEMO MODE · FROM 0x9f…4c21' : `ID ${id?.slice(0, 8)}… · SEPOLIA`}
+              {isDemoMode ? t('locked_sub_demo') : `ID ${id?.slice(0, 8)}… · SEPOLIA`}
             </div>
           </div>
         </div>
         <span className="chain-net">
           <span className="dot" />
-          {isDemoMode ? 'DEMO' : 'VERIFIED · Sepolia'}
+          {isDemoMode ? t('chain_demo') : t('chain_verified')}
         </span>
       </div>
 
-      {/* Locked state */}
       <div className="locked">
         <div className="lock-vis">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" />
           </svg>
         </div>
-        <h2>端到端加密訊息</h2>
+        <h2>{t('h2')}</h2>
         <p>
-          本訊息在傳送端的瀏覽器內完成加密，伺服器
-          <b style={{ color: 'var(--text)' }}>不保留任何備份</b>。
-          一旦解鎖，內容將立即從伺服器銷毀，僅留下區塊鏈上的雜湊存證。
+          {t.rich('desc', { b: chunks => <b style={{ color: 'var(--text)' }}>{chunks}</b> })}
         </p>
         <div className="promises">
-          {['伺服器零知識', '閱讀後消失', '鏈上完整性驗證', 'AES-256-GCM'].map(label => (
+          {([t('promise_zero'), t('promise_once'), t('promise_chain'), t('promise_aes')] as string[]).map(label => (
             <span className="promise" key={label}>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M20 6 9 17l-5-5" />
@@ -148,12 +144,12 @@ export function VaultCard({ id, fragment }: VaultCardProps) {
         {needsPassword && (
           <div style={{ marginBottom: 20 }}>
             <div style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--text-3)', letterSpacing: '0.08em', marginBottom: 8 }}>
-              此訊息受密碼保護，請輸入密碼後解鎖
+              {t('pwd_label')}
             </div>
             <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
               <input
                 type={showPwd ? 'text' : 'password'}
-                placeholder="輸入密碼…"
+                placeholder={t('pwd_placeholder')}
                 value={pwdInput}
                 onChange={e => setPwdInput(e.target.value)}
                 onKeyDown={e => e.key === 'Enter' && !loading && handleUnlock()}
@@ -207,17 +203,16 @@ export function VaultCard({ id, fragment }: VaultCardProps) {
           disabled={loading || (needsPassword && !pwdInput)}
         >
           {UNLOCK_ICON}
-          <span className="lbl">{loading ? '解密中…' : '解鎖訊息'}</span>
+          <span className="lbl">{loading ? t('unlocking') : t('unlock')}</span>
         </button>
         <div style={{ marginTop: 18, fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--text-3)', letterSpacing: '0.08em' }}>
-          按下後即視為您已閱讀，訊息將被銷毀。
+          {t('confirm')}
         </div>
       </div>
 
-      {/* Unlocked state */}
       <div className="unlocked">
         <div className="msg-meta">
-          <span className="lbl">DECRYPTED MESSAGE</span>
+          <span className="lbl">{t('decrypted_label')}</span>
           <span className="from">{isDemoMode ? 'DEMO' : `ID ${id?.slice(0, 8)}…`}</span>
         </div>
         <div className={`message${typing ? ' typing' : ''}`}>{displayedText}</div>
@@ -231,8 +226,8 @@ export function VaultCard({ id, fragment }: VaultCardProps) {
               </svg>
             </div>
             <div>
-              <div className="t">{verified ? '訊息完整性已驗證' : '完整性驗證失敗'}</div>
-              <div className="s">SHA-256 雜湊{verified ? '與鏈上紀錄一致' : '不符，請注意'}</div>
+              <div className="t">{verified ? t('integrity_ok') : t('integrity_fail')}</div>
+              <div className="s">{verified ? t('integrity_ok_sub') : t('integrity_fail_sub')}</div>
             </div>
           </div>
           <div className="right">
@@ -243,7 +238,7 @@ export function VaultCard({ id, fragment }: VaultCardProps) {
                 target="_blank"
                 rel="noopener"
               >
-                於 Etherscan 驗證 &rarr;
+                {t('etherscan')} &rarr;
               </a>
             )}
           </div>
@@ -253,7 +248,7 @@ export function VaultCard({ id, fragment }: VaultCardProps) {
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <circle cx="12" cy="12" r="10" /><polyline points="12,6 12,12 16,14" />
           </svg>
-          離開此頁面後，訊息將永久消失。剩餘 <span className="count">{countdown}</span>
+          {t('destruct')} <span className="count">{countdown}</span>
         </div>
       </div>
     </div>

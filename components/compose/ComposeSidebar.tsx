@@ -1,4 +1,9 @@
+'use client'
+import { useTranslations } from 'next-intl'
+
 export function ComposeSidebar() {
+  const t = useTranslations('sidebar_compose')
+
   return (
     <aside className="side">
       <div className="card side-card">
@@ -10,13 +15,13 @@ export function ComposeSidebar() {
       </div>
 
       <div className="card side-card">
-        <h3>處理流程</h3>
+        <h3>{t('how_title')}</h3>
         <div className="flow">
-          <div className="flow-step"><span className="ico">01</span><span>在裝置端產生隨機金鑰</span></div>
-          <div className="flow-step"><span className="ico">02</span><span>AES-GCM 加密原文</span></div>
-          <div className="flow-step"><span className="ico">03</span><span>計算密文雜湊</span></div>
-          <div className="flow-step"><span className="ico">04</span><span>寫入區塊鏈存證</span></div>
-          <div className="flow-step"><span className="ico">05</span><span>產生分享連結</span></div>
+          <div className="flow-step"><span className="ico">01</span><span>{t('step1')}</span></div>
+          <div className="flow-step"><span className="ico">02</span><span>{t('step2')}</span></div>
+          <div className="flow-step"><span className="ico">03</span><span>{t('step3')}</span></div>
+          <div className="flow-step"><span className="ico">04</span><span>{t('step4')}</span></div>
+          <div className="flow-step"><span className="ico">05</span><span>{t('step5')}</span></div>
         </div>
       </div>
 

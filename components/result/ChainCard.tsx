@@ -1,4 +1,5 @@
 'use client'
+import { useTranslations } from 'next-intl'
 
 interface ChainCardProps {
   txHash: string
@@ -6,9 +7,11 @@ interface ChainCardProps {
 }
 
 export function ChainCard({ txHash, showToast }: ChainCardProps) {
+  const t = useTranslations('chainCard')
+
   const copyHash = async () => {
     try { await navigator.clipboard.writeText(txHash) } catch {}
-    showToast('Tx Hash 已複製')
+    showToast(t('copied'))
   }
 
   const sealedAt = new Date().toISOString().replace('T', ' ').slice(0, 19) + ' UTC'
@@ -16,15 +19,15 @@ export function ChainCard({ txHash, showToast }: ChainCardProps) {
   return (
     <div className="card chain-card">
       <div className="chain-head">
-        <h3 className="section-title" style={{ margin: 0 }}>區塊鏈存證</h3>
+        <h3 className="section-title" style={{ margin: 0 }}>{t('title')}</h3>
         <span className="chain-net"><span className="dot" /> Ethereum · Sepolia</span>
       </div>
 
       <div className="chain-row">
-        <div className="label">Tx Hash · 交易雜湊</div>
+        <div className="label">{t('label_tx')}</div>
         <div className="val">
           <span className="hash">{txHash}</span>
-          <button className="icon-btn" title="複製" onClick={copyHash}>
+          <button className="icon-btn" title={t('copy_hash')} onClick={copyHash}>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <rect x="9" y="9" width="13" height="13" rx="2" />
               <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
@@ -34,7 +37,7 @@ export function ChainCard({ txHash, showToast }: ChainCardProps) {
       </div>
 
       <div className="chain-row">
-        <div className="label">上鏈狀態</div>
+        <div className="label">{t('label_chain')}</div>
         <div className="val">
           <span className="status"><span className="dot" /> SUBMITTED</span>
           <span className="confirms">Sepolia</span>
@@ -58,7 +61,7 @@ export function ChainCard({ txHash, showToast }: ChainCardProps) {
             <line x1="2" y1="12" x2="22" y2="12" />
             <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
           </svg>
-          在 Etherscan 檢視
+          {t('verify')}
         </span>
         <span className="r">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">

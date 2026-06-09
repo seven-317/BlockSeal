@@ -1,3 +1,5 @@
+'use client'
+import { useTranslations } from 'next-intl'
 import { SuccessBanner } from './SuccessBanner'
 import { ShareLinkCard } from './ShareLinkCard'
 import { ChainCard } from './ChainCard'
@@ -22,29 +24,28 @@ const DEMO_DATA: SealData = {
 
 export function ResultScreen({ show, sealData, showToast }: ResultScreenProps) {
   const data = sealData ?? DEMO_DATA
+  const t = useTranslations('result')
 
   return (
     <section className={`screen${show ? ' show' : ''}`} id="screen-result">
       <div className="screen-meta">
         <div>
           <div className="crumb">
-            <span>SYSTEM</span><span className="sep">/</span>
-            <span>SEAL</span><span className="sep">/</span>
+            <span>{t('crumb.system')}</span><span className="sep">/</span>
+            <span>{t('crumb.seal')}</span><span className="sep">/</span>
             <span className="cur">SEALED · {data.txHash.slice(0, 10)}…</span>
           </div>
           <h1 className="title" style={{ marginTop: 12 }}>
-            已封印。<em>連結即金鑰。</em>
+            {t.rich('title', { em: chunks => <em>{chunks}</em> })}
           </h1>
-          <p className="subtitle">
-            訊息已在你的瀏覽器完成加密，並寫入區塊鏈作為存證。請妥善保管下方連結。
-          </p>
+          <p className="subtitle">{t('subtitle')}</p>
         </div>
         <div className="step-indicator">
-          <div className="step done"><span className="n">✓</span><span>輸入</span></div>
+          <div className="step done"><span className="n">✓</span><span>{t('steps.input')}</span></div>
           <span style={{ width: 18, height: 1, background: 'var(--accent)' }} />
-          <div className="step active"><span className="n">2</span><span>封印</span></div>
+          <div className="step active"><span className="n">2</span><span>{t('steps.seal')}</span></div>
           <span style={{ width: 18, height: 1, background: 'var(--border)' }} />
-          <div className="step"><span className="n">3</span><span>分享</span></div>
+          <div className="step"><span className="n">3</span><span>{t('steps.share')}</span></div>
         </div>
       </div>
 
