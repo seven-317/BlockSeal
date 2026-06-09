@@ -18,7 +18,7 @@ async function deriveWrappingKey(password: string, salt: Uint8Array): Promise<Cr
     'raw', new TextEncoder().encode(password), 'PBKDF2', false, ['deriveKey'],
   )
   return crypto.subtle.deriveKey(
-    { name: 'PBKDF2', salt, iterations: 200_000, hash: 'SHA-256' },
+    { name: 'PBKDF2', salt: salt.buffer as ArrayBuffer, iterations: 200_000, hash: 'SHA-256' },
     base,
     { name: 'AES-GCM', length: 256 },
     false,
